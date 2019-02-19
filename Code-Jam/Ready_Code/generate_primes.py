@@ -12,45 +12,35 @@ def is_prime(n):
     return False
 
 
-valid_nonPrime_number = []
-def check_valid_numbers(ninenine, real_n):
-    valid_numbers = 0
-    for number in range(10 ** (real_n - 1), int(ninenine)):
-        if (checkRules(number, real_n)):
-            valid_numbers = valid_numbers + 1
-            valid_nonPrime_number.append(number)
-    return valid_numbers
-
-
-def checkRules(number, real_n):
-    digits = [int(i) for i in str(number)]
-    digital_len = len(digits)
-    for index in range(real_n - 2):
-        if (index < digital_len - 2):
-            string_3_digit = digits[index] + digits[index + 1] + digits[index + 2]
-            if (not is_prime(string_3_digit)):
-                return False
-
-        if (index < digital_len - 3):
-            string_4_digit = string_3_digit + digits[index + 3]
-            if (not is_prime(string_4_digit)):
-                return False
-        if (index < digital_len - 4):
-            string_5_digit = string_4_digit + digits[index + 4]
-            if (not is_prime(string_5_digit)):
-                return False
-    return True
-
-
-#
-# Complete the primeDigitSums function below.
-#
-def primeDigitSums(n):
-    search_until_number = n * "9"
-    return check_valid_numbers(search_until_number, n)
-
-
-import math
+# A function to print all prime factors of  
+# a given number n 
+def primeFactors(n): 
+      
+    # Print the number of two's that divide n 
+    while n % 2 == 0: 
+        print 2, 
+        n = n / 2
+          
+    # n must be odd at this point 
+    # so a skip of 2 ( i = i + 2) can be used 
+    for i in range(3,int(math.sqrt(n))+1,2): 
+          
+        # while i divides n , print i ad divide n 
+        while n % i== 0: 
+            print i, 
+            n = n / i 
+              
+    # Condition if n is a prime 
+    # number greater than 2 
+    if n > 2: 
+        print n 
+          
+# Driver Program to test above function 
+  
+n = 315
+primeFactors(n) 
+  
+# This code is contributed by Harshit Agrawal 
 
 
 def sieveOfAtkin(limit):
