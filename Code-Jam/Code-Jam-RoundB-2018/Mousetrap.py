@@ -3,7 +3,7 @@ from operator import itemgetter
 q = int(input())
 for _ in range(1, q+1):
     k = int(input())
-    cards = list(map(int, input().split(' ')))[1:]
+    n, *cards = list(map(int, input().split(' ')))
     ans = k * [-1]
     find = [i for i in range(k)]
     count = 1
