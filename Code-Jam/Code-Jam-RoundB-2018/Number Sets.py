@@ -1,5 +1,5 @@
 import sys
-
+import math
 
 class union_find:
     """
@@ -57,34 +57,48 @@ class union_find:
         """Representation of the union find object."""
         return "UF(" + str(self) + ")"
 
-q = int(sys.stdin.readline().rstrip())
+q = int(input())
 
-# This function returns a list containing all the factors of a ginven parameters n
-def getFactors(n):
-    # Create an empty list for factors
-    factors=set();
+def prime_factors(n, P):
+    num = set()
 
-    # Loop over all factors
-    for i in range(1, int(n ** 0.5)+1):
-        if n % i == 0:
-            factors.add(i)
+    #add 2 to list or prime factors and remove all even numbers(like sieve of ertosthenes)
+    while(n%2 == 0):
+        if 2 >= P:
+            num.add(2)
+        n /= 2
 
-    # Return the list of factors
-    return factors
+    #divide by odd numbers and remove all of their multiples increment by 2 if no perfectlly devides add it
+    for i in range(3, int(math.sqrt(n))+1, 2):
+        while (n%i == 0):
+            if i >= P:
+                num.add(i)
+            n /= i
 
+    #if no is > 2 i.e no is a prime number that is only divisible by itself add it
+    if n>2:
+        if( n >= P):
+            num.add(n)
 
+    return num
 
-for i in range(q):
-    start, end, prime = map(int, sys.stdin.readline().rstrip().split(' '))
-    num_set = end-start
-    for i in range(start,end):
-        for j in range(start,end):
-            if( i != j ):
-                for k in range(prime):
-                    if(getFactors(i).intersection(getFactors((j)))):
+dis = {}
+for _ in range(1, q+1):
+    start, end, P_prime = map(int, input().split(' '))
+    num_set = end-start+1
+    ans = union_find(num_set)
+    for i in range(start, end+1):
+        for j in range(start, end+1):
+            s_i = str(i) + str(P_prime)
+            if s_i not in dis:
+                dis[s_i] = prime_factors(i, P_prime)
+            s_j = str(j) + str(P_prime)
+            if s_j not in dis:
+                dis[s_j] = prime_factors(j, P_prime)
 
+            if len(dis[s_i]) != 0 and len(dis[s_j]) != 0:
+                if dis[s_i] & dis[s_j]:
+                    ans.union(i-start, j-start)
 
-
-
-
-
+    with open('set_numbers.txt', 'a') as the_file:
+        the_file.write('Case #{}: {}\n'.format(_, ans.count()))
